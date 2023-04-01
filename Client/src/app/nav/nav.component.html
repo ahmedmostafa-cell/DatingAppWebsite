@@ -3,7 +3,7 @@
     <a class="navbar-brand" href="#">DatingApp</a>
 
 
-    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+    <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountservice.currentUser$| async">
       <li class="nav-item">
         <a class="nav-link" aria-current="page" href="#">Matches</a>
       </li>
@@ -13,8 +13,21 @@
       <li class="nav-item">
         <a class="nav-link ">Messages</a>
       </li>
+      <li class="nav-item" (click)="loggedOut()">
+        <a class="nav-link ">LogOut</a>
+      </li>
     </ul>
-    <form #loginform="ngForm" class="d-flex" (ngSubmit)="logIn()" autocomplete="off">
+    <div class="dropdown" *ngIf="accountservice.currentUser$ | async" dropdown>
+      <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome User</a>
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item">Edot Profile</a>
+        <a class="dropdown-item" (click)="loggedOut()">Log Out</a>
+
+      </div>
+    </div>
+
+    <form *ngIf="!(accountservice.currentUser$| async)" #loginform="ngForm" class="d-flex" (ngSubmit)="logIn()"
+      autocomplete="off">
       <input name="UserName" [(ngModel)]="model.UserName" class="form-control me-2" type="text" placeholder="UserName">
       <input name="Password" [(ngModel)]="model.Password" class="form-control me-2" type="text" placeholder="Password">
       <button class="btn btn-outline-success" type="submit">LogIn</button>
