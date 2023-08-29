@@ -1,6 +1,8 @@
 
+using API.Data;
 using API.Extensions;
 using API.MiddleWare;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +38,20 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapControllers();
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var cotntext = services.GetRequiredService<DataContext>();
+    await cotntext.Database.MigrateAsync();
+    await Seed.seedUsers(cotntext);
+}
+catch (Exception eX)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(eX, "an error occured");
+
+}
 
 
 
