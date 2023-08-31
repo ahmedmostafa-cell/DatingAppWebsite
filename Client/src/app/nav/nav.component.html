@@ -24,7 +24,7 @@
       <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome {{user.userName | titlecase
         }}</a>
       <div class="dropdown-menu mt-3" *dropdownMenu>
-        <a class="dropdown-item">Edot Profile</a>
+        <a class="dropdown-item" routerLink="/member/edit">Edot Profile</a>
         <a class="dropdown-item" (click)="loggedOut()">Log Out</a>
 
       </div>
