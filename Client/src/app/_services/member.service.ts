@@ -18,6 +18,7 @@ export class MemberService {
     return this.http.get<Member[]>(this.baseUrl + 'User' ).pipe(
       map(members=> {
         this.members = members;
+        console.log(this.members);
         return members;
       })
     )
@@ -38,6 +39,16 @@ export class MemberService {
         this.members[index] = {...this.members[index], ...member};
       })
     )
+  }
+
+  setMainPhoto(photoId:number)
+  {
+    return this.http.put(this.baseUrl + 'User/set-main-photo/' + photoId , {});
+  }
+
+  deletePhoto(photoId:number)
+  {
+    return this.http.delete(this.baseUrl + 'User/delete-photo/' + photoId);
   }
 
 

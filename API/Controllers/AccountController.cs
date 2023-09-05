@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,14 +18,16 @@ namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
+        public IUserRepository _UserRepository;
         private readonly DataContext ctx;
         public ITokenService tokenservice { get; }
 
-        public AccountController(DataContext Ctx, ITokenService Tokenservice)
+        public AccountController(IUserRepository userRepository, DataContext Ctx, ITokenService Tokenservice)
         {
             tokenservice = Tokenservice;
 
             ctx = Ctx;
+            _UserRepository = userRepository;
 
         }
 
@@ -50,7 +53,8 @@ namespace API.Controllers
                 return new UserDtos
                 {
                     UserName = user.UserName,
-                    token = tokenservice.createToken(user)
+                    token = tokenservice.createToken(user),
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
 
                 };
 
@@ -61,7 +65,8 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDtos>> login(LoginDtoS loginDtos)
         {
-            var user = await ctx.Users.SingleOrDefaultAsync(a => a.UserName == loginDtos.UserName);
+            // var user = await _UserRepository.GetUserByUserNameAsync(loginDtos.UserName);
+            var user = await ctx.Users.Include(p => p.Photos).SingleOrDefaultAsync(a => a.UserName == loginDtos.UserName);
             if (user == null)
             {
                 return Unauthorized("invalid username");
@@ -77,7 +82,8 @@ namespace API.Controllers
                 return new UserDtos
                 {
                     UserName = user.UserName,
-                    token = tokenservice.createToken(user)
+                    token = tokenservice.createToken(user),
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
 
                 };
             }

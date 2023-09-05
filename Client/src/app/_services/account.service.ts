@@ -20,9 +20,8 @@ export class AccountService {
         const user = response;
         if(user)
         {
-          localStorage.setItem('user' , JSON.stringify(user));
-          console.log(response);
-          this.currentUserSource.next(user);
+          console.log(user);
+            this.setCuutentUser(user);
         }
       })
     )
@@ -36,8 +35,7 @@ export class AccountService {
 
         if(User)
         {
-          localStorage.setItem('user' , JSON.stringify(User));
-          this.currentUserSource.next(User);
+          this.setCuutentUser(User);
         }
 
 
@@ -46,6 +44,8 @@ export class AccountService {
   }
   setCuutentUser(user : User)
   {
+    localStorage.setItem('user' , JSON.stringify(user));
+
     this.currentUserSource.next(user);
   }
 
