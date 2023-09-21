@@ -9,6 +9,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,9 +22,11 @@ namespace API.Controllers
         public IUserRepository _UserRepository;
         private readonly DataContext ctx;
         public ITokenService tokenservice { get; }
+        public IMapper _mapper { get; }
 
-        public AccountController(IUserRepository userRepository, DataContext Ctx, ITokenService Tokenservice)
+        public AccountController(IUserRepository userRepository, DataContext Ctx, ITokenService Tokenservice, IMapper mapper)
         {
+            _mapper = mapper;
             tokenservice = Tokenservice;
 
             ctx = Ctx;
@@ -41,20 +44,21 @@ namespace API.Controllers
             }
             else
             {
+                var user = _mapper.Map<AppUser>(registerDTOs);
                 using var hmac = new HMACSHA512();
-                var user = new AppUser
-                {
-                    UserName = registerDTOs.UserName.ToLower(),
-                    passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTOs.Password)),
-                    passwordSalt = hmac.Key
-                };
+
+                user.UserName = registerDTOs.UserName.ToLower();
+                user.passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDTOs.Password));
+                user.passwordSalt = hmac.Key;
+
                 ctx.Users.Add(user);
                 await ctx.SaveChangesAsync();
                 return new UserDtos
                 {
                     UserName = user.UserName,
                     token = tokenservice.createToken(user),
-                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                    KnownAs = user.KnownAs
 
                 };
 
@@ -83,7 +87,8 @@ namespace API.Controllers
                 {
                     UserName = user.UserName,
                     token = tokenservice.createToken(user),
-                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                    KnownAs = user.KnownAs
 
                 };
             }

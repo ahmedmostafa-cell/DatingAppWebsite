@@ -21,6 +21,6 @@ export class LoadingInterceptor implements HttpInterceptor {
         this.busyService.idle();
 
       }))
-    
+
   }
 }
