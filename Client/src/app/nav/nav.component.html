@@ -22,8 +22,7 @@
     </ul>
     <div class="dropdown" *ngIf="(accountservice.currentUser$ | async) as user" dropdown>
       <img src="{{user.photoUrl || './assets/user.png'}}" alt="user Photo">
-      <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome {{user.userName | titlecase
-        }}</a>
+      <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome {{user.knownAs}}</a>
       <div class="dropdown-menu mt-3" *dropdownMenu>
         <a class="dropdown-item" routerLink="/member/edit">Edot Profile</a>
         <a class="dropdown-item" (click)="loggedOut()">Log Out</a>
@@ -34,7 +33,8 @@
     <form *ngIf="!(accountservice.currentUser$| async)" #loginform="ngForm" class="d-flex" (ngSubmit)="logIn()"
       autocomplete="off">
       <input name="UserName" [(ngModel)]="model.UserName" class="form-control me-2" type="text" placeholder="UserName">
-      <input name="Password" [(ngModel)]="model.Password" class="form-control me-2" type="text" placeholder="Password">
+      <input name="Password" [(ngModel)]="model.Password" class="form-control me-2" type="password"
+        placeholder="Password">
       <button class="btn btn-success" type="submit">LogIn</button>
     </form>
   </div>

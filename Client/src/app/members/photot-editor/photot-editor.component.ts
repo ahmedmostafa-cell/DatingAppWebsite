@@ -83,6 +83,7 @@ export class PhototEditorComponent implements OnInit {
       maxFileSize : 10*1024*1024,
 
     });
+
     this.uploader.onBeforeUploadItem = (file) => {
       file.withCredentials = false;
     }
