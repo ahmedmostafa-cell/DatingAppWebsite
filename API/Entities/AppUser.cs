@@ -33,10 +33,11 @@ namespace API.Entities
         public byte[] passwordHash { get; set; }
         public byte[] passwordSalt { get; set; }
 
-        // public int GetAge()
-        // {
-        //     return DateOfBirth.calculateAge();
-        // }
+        public List<UserLike> LikedByUsers { get; set; }
+
+        public List<UserLike> LikedUsers { get; set; }
+
+
     }
 
 

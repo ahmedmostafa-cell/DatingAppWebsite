@@ -52,7 +52,7 @@ export class MemberListComponent implements OnInit {
 
       this.userparamse = this.memberService.resetUserParams();
       this.loadMembers();
-   
+
   }
 
 
