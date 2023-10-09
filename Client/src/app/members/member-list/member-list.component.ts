@@ -60,7 +60,7 @@ export class MemberListComponent implements OnInit {
 
   pageChnaged(event:any)
   {
-    if(this.userparamse && this.userparamse?.pageNumber!=event.page)
+    if(this.userparamse && this.userparamse?.pageNumber!==event.page)
     {
       this.userparamse.pageNumber = event.page;
       this.memberService.setUserParams(this.userparamse);

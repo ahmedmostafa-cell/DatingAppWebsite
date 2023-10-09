@@ -23,7 +23,7 @@ namespace API.Controllers
     {
 
         public IUserRepository _UserRepository;
-        public IMapper _mapper { get; }
+        public IMapper _mapper;
         private readonly IPhotoService _photoService;
 
         public UserController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
