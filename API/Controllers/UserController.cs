@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace API.Controllers
 {
 
-
+    [Authorize]
     public class UserController : BaseApiController
     {
 
