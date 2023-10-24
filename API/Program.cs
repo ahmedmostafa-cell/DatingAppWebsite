@@ -3,6 +3,7 @@ using API.Data;
 using API.Entities;
 using API.Extensions;
 using API.MiddleWare;
+using API.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,14 +33,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleWare>();
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 
 app.MapControllers();
-
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
@@ -48,6 +50,8 @@ try
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
     await cotntext.Database.MigrateAsync();
+    //cotntext.Connections.RemoveRange(cotntext.Connections);
+    await cotntext.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
     await Seed.seedUsers(userManager, roleManager);
 }
 catch (Exception eX)
