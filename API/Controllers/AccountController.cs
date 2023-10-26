@@ -25,13 +25,15 @@ namespace API.Controllers
         public ITokenService tokenservice { get; }
         public IMapper _mapper { get; }
 
-        public AccountController(IUserRepository userRepository, UserManager<AppUser> userManager, ITokenService Tokenservice, IMapper mapper)
+        private readonly IUnitOfWork _uow;
+
+        public AccountController(IUnitOfWork uow, UserManager<AppUser> userManager, ITokenService Tokenservice, IMapper mapper)
         {
             _mapper = mapper;
             tokenservice = Tokenservice;
 
             _userManager = userManager;
-            _UserRepository = userRepository;
+            _uow = uow;
 
         }
 
