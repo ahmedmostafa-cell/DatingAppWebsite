@@ -1,16 +1,16 @@
-# fly.toml app configuration file generated for datingappahmed on 2023-12-08T11:20:10+02:00
+# fly.toml app configuration file generated for datingapp22 on 2023-12-08T21:39:59+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "datingappahmed"
+app = "datingapp22"
 primary_region = "cdg"
 
 [build]
-  image = "ahmedmostafa706/newdatingapp:latest"
+  image = "ahmedmostafa706/newdatingapp2:latest"
 
 [env]
-  ASPNETCORE_ULS="http://+:8080"
+  ASPNETCORE_URLS="http://+:8080"
   CloudinarySettings__CloudName="deagseynu"
   CloudinarySettings__ApiKey="637168674414597"
 
