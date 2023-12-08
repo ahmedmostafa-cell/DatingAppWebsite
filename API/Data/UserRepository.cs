@@ -85,5 +85,25 @@ namespace API.Data
         {
             return await _context.Users.Where(a => a.UserName == userName).Select(a => a.Gender).FirstOrDefaultAsync();
         }
+
+        public async Task<MemberDtos> GetMemberAsync(string username, bool
+        isCurrentUser)
+        {
+            var query = _context.Users
+            .Where(x => x.UserName == username)
+            .ProjectTo<MemberDtos>(_mapper.ConfigurationProvider)
+            .AsQueryable();
+            if (isCurrentUser) query = query.IgnoreQueryFilters();
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<AppUser> GetUserByPhotoId(int photoId)
+        {
+            return await _context.Users
+            .Include(p => p.Photos)
+            .IgnoreQueryFilters()
+            .Where(p => p.Photos.Any(p => p.Id == photoId))
+            .FirstOrDefaultAsync();
+        }
     }
 }

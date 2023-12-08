@@ -30,6 +30,9 @@ namespace API.Data
 
         public DbSet<Connection> Connections { get; set; }
 
+
+        public DbSet<Photo> Photos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -80,6 +83,11 @@ namespace API.Data
             .HasOne(s => s.Sender)
             .WithMany(l => l.MessagesSent)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Photo>().HasQueryFilter(p => p.IsApproved);
+
+
         }
     }
 }

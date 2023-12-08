@@ -20,5 +20,11 @@ namespace API.Interfaces
 
         Task<string> GetUserGender(string userName);
 
+
+        Task<MemberDtos> GetMemberAsync(string username, bool isCurrentUser);
+
+
+        Task<AppUser> GetUserByPhotoId(int photoId);
+
     }
 }

@@ -15,15 +15,12 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-            });
             services.AddCors();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
-            services.AddScoped<IPhotoService, PhotoService>();
+
             services.AddScoped<LoggUsersActivity>();
             services.AddSignalR();
             services.AddSingleton<PresenceTracker>();

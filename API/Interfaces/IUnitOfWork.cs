@@ -12,7 +12,7 @@ namespace API.Interfaces
         IMessageRepository MssageRepository { get; }
 
         ILikedRepository LikedRepository { get; }
-
+        IPhotoRepository PhotoRepository { get; }
         Task<bool> Complete();
 
         bool HasVhanges();
