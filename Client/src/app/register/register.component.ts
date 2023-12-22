@@ -49,7 +49,8 @@ export class RegisterComponent implements OnInit {
 
     const dob = this.getDateOnly(this.registerForm.controls['dateOfBirth'].value);
     const values = {...this.registerForm.value , dateOfBirth:dob};
-   
+    console.log("ahmedddd");
+    console.log(values);
     this.accountservice.register(values).subscribe({
       next: () => {
 
@@ -59,6 +60,9 @@ export class RegisterComponent implements OnInit {
       error: error => {
 
        this.validationErrors = error;
+       console.log("ahmedddd");
+        console.log(error.error);
+
       }
     })
 
